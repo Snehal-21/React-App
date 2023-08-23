@@ -6,7 +6,7 @@ export const register=async(req,res)=>{
         const {name,email,Password}=req.body;
 
         const existUser=await User.findOne({email}).exec();
-        if(existUser) return res.status(400).json({status:400,message:"You are already registered."});
+        if(existUser) return res.json({status:403, message:"You are already registered."});
 
         const encPass=await bcrypt.hash(Password,10);
 
