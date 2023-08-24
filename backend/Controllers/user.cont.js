@@ -6,7 +6,7 @@ export const register=async(req,res)=>{
         const {name,email,Password}=req.body;
 
         const existUser=await User.findOne({email}).exec();
-        if(existUser) return res.json({status:403, message:"You are already registered."});
+        if(existUser) return res.status(403).json({status:403,success:false, message:"You are already registered."});
 
         const encPass=await bcrypt.hash(Password,10);
 
@@ -16,16 +16,16 @@ export const register=async(req,res)=>{
             Password:encPass
         });
         await newUser.save();
-        return res.status(200).json({status:200,message:"User reqistered successfully."});
+        return res.status(200).json({status:200,success:true,message:"User reqistered successfully."});
     } catch (error) {
-        return res.status(400).json({status:400,message:"Internal server error"})
+        return res.status(400).json({status:400,success:false,message:"Internal server error"})
     }
 }
 
 export const login=async(req,res)=>{
     try {
-        return res.status(200).json({status:200,message:"Logg in successful"})
+        return res.status(200).json({status:200,success:true,message:"Logg in successful"})
     } catch (error) {
-        return res.status(400).json({status:400,message:"Internal server error"})
+        return res.status(400).json({status:400,success:false, message:"Internal server error"})
     }
 }

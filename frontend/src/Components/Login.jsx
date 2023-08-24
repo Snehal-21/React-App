@@ -13,19 +13,20 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (userData.email && userData.Password) {
+          try {
             const response = await axios.post("http://localhost:8005/api/login", {
                 email: userData.email,
                 Password: userData.Password
             });
-
-            if (response.data.status === 200) {
-                Toast.success(response.data.message);
-            } else if (response.data.status === 400) {
-                Toast.error(response.data.message);
-            } else {
-                Toast.error(response.data.message);
+            const data=response.data;
+            if(data.success){
+                Toast.success(data.message);
             }
-
+          } catch (error) {
+            if(!error.response.data.success){
+                Toast.error(error.response.data.message);
+            }
+          }
         } else {
             Toast.error("Both fiels are required.")
         }

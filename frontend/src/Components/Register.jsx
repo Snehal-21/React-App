@@ -13,32 +13,28 @@ const Register = () => {
 
     const handleSubmit=async(e)=>{
     e.preventDefault();
+    
         if(userData.name && userData.email && userData.Password && userData.confirmPassword){
-            if(userData.Password.length >=5 && userData.confirmPassword.length >=5){
-            if(userData.Password === userData.confirmPassword){
-                const response=await axios.post('http://localhost:8005/api/register',{
+                try {
+                    const response=await axios.post('http://localhost:8005/api/register',{
                     name:userData.name,
                     email:userData.email,
                     Password:userData.Password,
                     confirmPassword:userData.confirmPassword
                 });
-                if(response.data.status===200){
-                    Toast.success(response.data.message);
-                    router('/login')
-                }else if(response.data.status === 400){
-                    Toast.error(response.data.message);
-                }else if(response.data.status === 403){
-                    Toast.error(response.data.message);
-                }else{
-                    Toast(response.data.message);
+                const data=response.data;
+                if(data.success){
+                    Toast.success(data.message);
+                    router('/login');
                 }
+                } catch (error) {
+                    if(!error.response.data.success){
+                        console.log(error);
+                        Toast.error(error.response.data.message);
+                    }
+                }
+                
             }else{
-                Toast.error("Passwords not matched")
-            }
-        }else{
-            Toast.error("Password should be greater than 5 digits.")
-        }
-        }else{
             Toast.error("All fields are required.")
         }
     }
