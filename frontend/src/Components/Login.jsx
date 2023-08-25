@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Toast from "react-hot-toast";
 import axios from "axios";
+import { AuthContext } from "./Context/AuthContext";
 const Login = () => {
     const [userData, setUserData] = useState({ email: "", Password: "" });
+    const {dispatch,state}=useContext(AuthContext);
+    console.log(state);
     const router = useNavigate();
 
     const handleChange = (e) => {
@@ -41,15 +44,15 @@ const Login = () => {
 
     return (
         <>
-            <div className="w-screen h-screen bg-rose-950 flex justify-center items-center">
+            <div className="w-screen h-screen bg-rose-100 flex justify-center items-center">
            
-                <form className="h-[340px] w-[450px] bg-lime-950 p-5 relative rounded-xl" onSubmit={handleSubmit}>
+                <form className="h-[340px] w-[450px] bg-rose-950 p-5 relative rounded-xl" onSubmit={handleSubmit}>
                 <h1 className="text-center text-3xl text-fuchsia-300 font-bold mb-5">Login</h1>
                     <label className="text-green-300">Email : </label><br/>
                     <input className="w-full h-[40px] mt-2 mb-5 pl-3 rounded-lg bg-lime-300 outline-none placeholder-amber-600" onChange={handleChange} type="email" name="email" placeholder="Enter Email" /><br/>
                     <label className="text-green-300">Password : </label><br/>
                     <input className="w-full h-[40px] mt-2 mb-5 pl-3 rounded-lg bg-lime-300 outline-none placeholder-amber-600" onChange={handleChange} type="Password" name="Password" placeholder="Enter Password" /><br/>
-                    <input className=" h-[40px] w-[100px] border fixed transform -translate-x-1/2 -translate-y-1/2 top-[68%] left-1/2 hover:border-green-800 hover:bg-blue-500 text-white rounded-lg" type="submit" value="Login" />
+                    <input className=" h-[40px] w-[100px] border fixed transform -translate-x-1/2 -translate-y-1/2 top-[68%] left-1/2 hover:border-green-800 hover:text-fuchsia-700 hover:bg-fuchsia-300 text-white rounded-lg" type="submit" value="Login" />
                 </form>
             </div>
             {/* <h1  className="mt-10 text-2xl font-semibold">Login Page</h1> */}

@@ -1,31 +1,44 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-export const register=async(req,res)=>{
+dotenv.config();
+
+export const register = async (req, res) => {
     try {
-        const {name,email,Password}=req.body;
+        const { name, email, Password } = req.body;
 
-        const existUser=await User.findOne({email}).exec();
-        if(existUser) return res.status(403).json({status:403,success:false, message:"You are already registered."});
+        const existUser = await User.findOne({ email }).exec();
+        if (existUser) return res.status(403).json({ status: 403, success: false, message: "You are already registered." });
 
-        const encPass=await bcrypt.hash(Password,10);
+        const encPass = await bcrypt.hash(Password, 10);
 
-        const newUser=new User({
+        const newUser = new User({
             name,
             email,
-            Password:encPass
+            Password: encPass
         });
         await newUser.save();
-        return res.status(200).json({status:200,success:true,message:"User reqistered successfully."});
+        return res.status(200).json({ status: 200, success: true, message: "User reqistered successfully." });
     } catch (error) {
-        return res.status(400).json({status:400,success:false,message:"Internal server error"})
+        return res.status(400).json({ status: 400, success: false, message: "Internal server error" })
     }
 }
 
-export const login=async(req,res)=>{
+export const login = async (req, res) => {
     try {
-        return res.status(200).json({status:200,success:true,message:"Logg in successful"})
+        const { email } = req.body;
+        const CheckUser = await User.findOne({ email }).exec();
+        if (!CheckUser) return res.status(404).json({ status: 404, success: false, message: "User not found." });
+        // console.log(CheckUser);
+        const jwttoken=process.env.JWT;
+        // console.log(jwttoken);
+        // const token= jwt.sign(CheckUser._id,jwttoken)
+        const token = jwt.sign(CheckUser._id, jwttoken);
+        console.log(token)
+        return res.status(200).json({ status: 200, success: true, message: "Logg in successful",data:token})
     } catch (error) {
-        return res.status(400).json({status:400,success:false, message:"Internal server error"})
+        return res.status(400).json({ status: 400, success: false, message: "Internal server error" })
     }
 }

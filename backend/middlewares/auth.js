@@ -23,7 +23,7 @@ export const loginChecks=async(req,res,next)=>{
         if(!Password) return res.status(400).json({status:400,success:false,message:"User password is required."});
 
         const checkUser=await User.findOne({email}).exec();
-        if(!checkUser) return res.status(400).json({status:400,success:false,message:"User not found"});
+        if(!checkUser) return res.status(400).json({status:400,success:false,message:"User not founddd"});
 
         const decPass=await bcrypt.compare(Password,checkUser.Password);
 
