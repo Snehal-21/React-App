@@ -21,7 +21,7 @@ const HandleAuthContext=({children})=>{
     const[state,dispatch]=useReducer(reducer,initialState);
 
     return(
-        <AuthContext.Provider value={{dispatch,state}}>
+        <AuthContext.Provider value={{state, dispatch}}>
             {children}
         </AuthContext.Provider>
     )

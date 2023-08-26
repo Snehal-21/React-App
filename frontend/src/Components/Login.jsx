@@ -5,8 +5,9 @@ import axios from "axios";
 import { AuthContext } from "./Context/AuthContext";
 const Login = () => {
     const [userData, setUserData] = useState({ email: "", Password: "" });
-    const {dispatch,state}=useContext(AuthContext);
+    const {state, dispatch}=useContext(AuthContext);
     console.log(state);
+    
     const router = useNavigate();
 
     const handleChange = (e) => {
@@ -23,7 +24,13 @@ const Login = () => {
             });
             const data=response.data;
             if(data.success){
+                dispatch({
+                    type:"LOGIN",
+                    payload:data.CheckUser
+                });
+                localStorage.setItem("jwtToken",JSON.stringify(data.data))
                 Toast.success(data.message);
+                router('/');
             }
           } catch (error) {
             if(!error.response.data.success){

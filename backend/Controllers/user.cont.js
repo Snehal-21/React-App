@@ -32,12 +32,12 @@ export const login = async (req, res) => {
         const CheckUser = await User.findOne({ email }).exec();
         if (!CheckUser) return res.status(404).json({ status: 404, success: false, message: "User not found." });
         // console.log(CheckUser);
-        const jwttoken=process.env.JWT;
+        const jwttoken = process.env.JWT;
         // console.log(jwttoken);
         // const token= jwt.sign(CheckUser._id,jwttoken)
-        const token = jwt.sign(CheckUser._id, jwttoken);
+        const token = jwt.sign({ userId: CheckUser._id }, jwttoken);
         console.log(token)
-        return res.status(200).json({ status: 200, success: true, message: "Logg in successful",data:token})
+        return res.status(200).json({ status: 200, success: true, message: "Logg in successful", data: token, CheckUser })
     } catch (error) {
         return res.status(400).json({ status: 400, success: false, message: "Internal server error" })
     }
