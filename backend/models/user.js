@@ -12,6 +12,13 @@ const user=new Schema({
     Password:{
         type:String,
         unique:true
+    },
+    otp:{
+        type:String
+    },
+    isOtpVerified:{
+        type:Boolean,
+        default:false
     }
 })
 
